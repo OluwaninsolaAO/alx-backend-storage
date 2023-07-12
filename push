@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# This script stage all changes in a Git repository
+# Create a Commit with ``$1`` positional arguement preffixed
+# with the word ``Task`` and push the changes to a remote
+# repository
+
+git add -A
+git commit -m "Task $1"
+git push
