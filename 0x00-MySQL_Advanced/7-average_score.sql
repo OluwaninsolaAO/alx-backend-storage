@@ -11,7 +11,7 @@ CREATE PROCEDURE ComputeAverageScoreForUser(
         SET average_score = (
             SELECT SUM(score) / COUNT(user_id)
             FROM corrections
-            WHERE user_id = user_id
+            WHERE corrections.user_id = user_id
         )
         WHERE id = user_id;
     END $$
