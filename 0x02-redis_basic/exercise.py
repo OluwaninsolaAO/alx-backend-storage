@@ -6,14 +6,14 @@ from uuid import uuid4
 from functools import wraps
 
 
-def count_calls(f: Callable) -> Callable:
+def count_calls(method: Callable) -> Callable:
     """that takes a single method Callable argument and
     returns a Callable"""
-    @wraps(f)
+    @wraps(method)
     def wrapper(self, *args, **kwargs):
         """Inner Wrapper function"""
-        self._redis.incr(f.__qualname__)
-        return f(self, *args, **kwargs)
+        self._redis.incr(method.__qualname__)
+        return method(self, *args, **kwargs)
     return wrapper
 
 
