@@ -9,10 +9,12 @@ from functools import wraps
 def count_calls(f: Callable) -> Callable:
     """that takes a single method Callable argument and
     returns a Callable"""
+    key = f.__qualname__
+
     @wraps(f)
     def wrapper(self, *args, **kwargs):
         """Inner Wrapper function"""
-        self._redis.incr(f.__qualname__)
+        self._redis.incr(key)
         return f(self, *args, **kwargs)
     return wrapper
 

@@ -31,6 +31,7 @@ for value in TEST_CASES_2:
     key = cache.store(value)
     print(f'[{key}] str: {cache.get_int(key)} int: {cache.get_str(key)}')
 
+cache = Cache()
 
 cache.store(b"first")
 print(cache.get(cache.store.__qualname__))
