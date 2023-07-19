@@ -16,13 +16,13 @@ def track_page_count(method: Callable) -> Callable:
         """Inner Wrapper Function"""
         cache = redis.Redis()
         url = args[0]
-        key = 'count:{' + url + '}'
+        key = 'count:' + url
         cache.incr(key)
         page = cache.get(url)
         if page is not None:
-            return page.encode('utf-8')
+            return page.decode('utf-8')
         page = method(*args, **kwargs)
-        cache.set(key, page, 10)
+        cache.setex(key, 10, page)
         return page
     return wrapper
 
