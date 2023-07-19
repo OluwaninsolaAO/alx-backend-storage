@@ -24,3 +24,9 @@ TEST_CASES = {
 for value, fn in TEST_CASES.items():
     key = cache.store(value)
     assert cache.get(key, fn=fn) == value
+
+TEST_CASES_2 = ['July', '19th', 2023]
+
+for value in TEST_CASES_2:
+    key = cache.store(value)
+    print(f'[{key}] str: {cache.get_int(key)} int: {cache.get_str(key)}')
