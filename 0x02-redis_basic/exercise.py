@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """0. Writing strings to Redis"""
 from typing import Union
-from redis import Redis
+from redis
 from uuid import uuid4
 
 
@@ -10,7 +10,7 @@ class Cache:
 
     def __init__(self) -> None:
         """Initializes a new Cache instance"""
-        self._redis = Redis(host='localhost', port=6379, db=0)
+        self._redis = redis.Redis(host='localhost', port=6379, db=0)
         self._redis.flushdb()
 
     def store(self, data: Union[str, bytes, int, float]) -> str:
