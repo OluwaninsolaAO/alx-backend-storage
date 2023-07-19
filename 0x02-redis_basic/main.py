@@ -30,3 +30,11 @@ TEST_CASES_2 = ['July', '19th', 2023]
 for value in TEST_CASES_2:
     key = cache.store(value)
     print(f'[{key}] str: {cache.get_int(key)} int: {cache.get_str(key)}')
+
+
+cache.store(b"first")
+print(cache.get(cache.store.__qualname__))
+
+cache.store(b"second")
+cache.store(b"third")
+print(cache.get(cache.store.__qualname__))

@@ -3,6 +3,18 @@
 from typing import Union, Optional, Callable
 import redis
 from uuid import uuid4
+from functools import wraps
+
+
+def count_calls(f: Callable) -> Callable:
+    """that takes a single method Callable argument and
+    returns a Callable"""
+    @wraps(f)
+    def wrapper(self, *args, **kwargs):
+        """Inner Wrapper function"""
+        self._redis.incr(f.__qualname__)
+        return f(self, *args, **kwargs)
+    return wrapper
 
 
 class Cache:
@@ -13,6 +25,7 @@ class Cache:
         self._redis = redis.Redis(host='localhost', port=6379, db=0)
         self._redis.flushdb()
 
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """Stores data in Redis using a random key
         and return the key."""
