@@ -9,11 +9,29 @@ from functools import wraps
 def count_calls(method: Callable) -> Callable:
     """that takes a single method Callable argument and
     returns a Callable"""
+    key = method.__qualname__
+
     @wraps(method)
     def wrapper(self, *args, **kwargs):
         """Inner Wrapper function"""
-        self._redis.incr(method.__qualname__)
+        self._redis.incr(key)
         return method(self, *args, **kwargs)
+    return wrapper
+
+
+def call_history(method: Callable) -> Callable:
+    """store the history of inputs and outputs for 
+    a particular function"""
+    in_key = method.__qualname__ + ':inputs'
+    out_key = method.__qualname__ + ':outputs'
+
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        """Inner Wrapper function"""
+        self._redis.rpush(in_key, str(args))
+        output = method(self, *args, **kwargs)
+        self._redis.rpush(out_key, str(output))
+        return output
     return wrapper
 
 
@@ -25,6 +43,7 @@ class Cache:
         self._redis = redis.Redis(host='localhost', port=6379, db=0)
         self._redis.flushdb()
 
+    @call_history
     @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """Stores data in Redis using a random key
