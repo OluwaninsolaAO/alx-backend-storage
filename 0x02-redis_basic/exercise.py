@@ -45,6 +45,8 @@ def replay(method: Callable) -> None:
     inputs = cache.lrange(input_key, 0, cache.llen(input_key))
     outputs = cache.lrange(ouput_key, 0, cache.llen(ouput_key))
 
+    print("{} was called {} times:".format(name, cache.llen(input_key)))
+
     for input, output in zip(inputs, outputs):
         print('{}(*{}) -> {}'.format(name,
                                      input.decode('utf-8'),
